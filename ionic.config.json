@@ -1,0 +1,7 @@
+{
+  "name": "Ascend",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
