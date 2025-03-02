@@ -1,3 +1,24 @@
-<p>
-  exercise-selector works!
-</p>
+<div class="text-container">
+  <span class="exercise-name">{{ exercise.name }}</span>
+  <span class="target-muscle">{{ exercise.targetMuscle }}</span>
+</div>
+
+<ion-modal #modal [isOpen]="setsModal" (didDismiss)="toggleModal()">
+  <ng-template>
+    <ion-picker>
+      <ion-picker-column [value]="setsAmount" (ionChange)="onIonChange($event)">
+        @for (i of iterations; track i) {
+        <ion-picker-column-option value="{{ i + 1 }}"
+          >{{ i + 1 }} sets</ion-picker-column-option
+        >
+        }
+      </ion-picker-column>
+    </ion-picker>
+  </ng-template>
+</ion-modal>
+<div class="button-container">
+  <ion-button size="small" shape="round" (click)="toggleModal()">{{
+    setsAmount
+  }}</ion-button>
+  <ion-checkbox />
+</div>

@@ -21,21 +21,6 @@ export const routes: Routes = [
       import('./workout/workout.page').then((m) => m.WorkoutPage),
   },
   {
-    path: 'exercises',
-    loadComponent: () =>
-      import('./exercises/exercises.page').then((m) => m.ExercisesPage),
-  },
-  {
-    path: 'logger',
-    loadComponent: () =>
-      import('./logger/logger.page').then((m) => m.LoggerPage),
-  },
-  {
-    path: 'new-workout',
-    loadComponent: () =>
-      import('./new-workout/new-workout.page').then((m) => m.NewWorkoutPage),
-  },
-  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full',

@@ -1,0 +1,37 @@
+:host {
+  padding: 0.35rem 1rem;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: solid 3px #121212;
+}
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  width: 4.5rem;
+}
+ion-modal {
+  --height: auto;
+  align-items: end;
+}
+ion-checkbox {
+  display: flex;
+  justify-content: center;
+  --size: 25px;
+}
+ion-button {
+  width: 30px;
+  height: 30px;
+}
+.text-container {
+  display: flex;
+  flex-direction: column;
+}
+.exercise-name {
+  font-size: x-large;
+}
+.target-muscle {
+  font-size: small;
+  opacity: 0.8;
+}
