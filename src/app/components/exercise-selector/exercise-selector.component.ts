@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import {
   IonButton,
   IonCheckbox,
@@ -20,23 +21,49 @@ import { Exercise } from 'src/app/interfaces/exercises';
     IonPickerColumnOption,
     IonButton,
     IonModal,
+    FormsModule,
   ],
 })
 export class ExerciseSelectorComponent implements OnInit {
   constructor() {}
   @Input() exercise!: Exercise;
+  @Input() sets: number | null = null;
+  @Input() checked: boolean = false;
 
-  iterations = Array.from({ length: 10 }, (_, i) => i);
+  @Output() updateWorkout = new EventEmitter<{
+    exercise: Exercise;
+    flag: boolean;
+  }>();
+
+  iterations = Array.from({ length: 69 }, (_, i) => i);
   setsModal = false;
-  setsAmount = '3';
 
   toggleModal() {
     this.setsModal = !this.setsModal;
   }
 
-  onIonChange(event: CustomEvent) {
-    this.setsAmount = event.detail.value;
+  onChangeSets(event: CustomEvent) {
+    this.exercise.sets = event.detail.value;
+    if (!this.checked) {
+      return;
+    }
+    this.updateWorkout.emit({ exercise: this.exercise, flag: true });
   }
 
-  ngOnInit() {}
+  onChangeChecked(event: CustomEvent) {
+    this.checked = event.detail.checked;
+    this.updateWorkout.emit({
+      exercise: this.exercise,
+      flag: this.checked,
+    });
+  }
+
+  ngOnInit() {
+    if (this.sets) {
+      this.exercise.sets = this.sets;
+      this.checked = true;
+    } else {
+      this.exercise.sets = 3;
+    }
+  }
 }

@@ -11,27 +11,41 @@
       label-placement="floating"
       fill="outline"
     ></ion-input>
-    <ion-button id="open-modal">Add exercise</ion-button>
+    <ion-button (click)="toggleExercises()" expand="block"
+      >Exercises</ion-button
+    >
+    @for(workoutExercise of workout; track workoutExercise){
+    <app-exercise-logger [exercise]="workoutExercise" />
+    }
   </div>
 
   <ion-modal
     #modal
-    trigger="open-modal"
     [presentingElement]="presentingElement"
+    [isOpen]="exercisesOpen"
+    (didDismiss)="this.exercisesOpen = false;"
   >
     <ng-template>
       <ion-header>
         <ion-toolbar>
-          <ion-title>Modal</ion-title>
+          <ion-title>Exercises</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="modal.dismiss()">Close</ion-button>
+            <ion-button (click)="toggleExercises()">Close</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
       <ion-content>
         <ion-list>
-          @for(exercise of this.exercises; track exercise){
-          <app-exercise-selector [exercise]="exercise" />
+          <ion-searchbar
+            [debounce]="100"
+            (ionInput)="handleSearchInput($event)"
+          ></ion-searchbar>
+          @for(exercise of this.results; track exercise){
+          <app-exercise-selector
+            [exercise]="exercise"
+            [sets]="getExerciseDetails(exercise.name)"
+            (updateWorkout)="handleUpdate($event)"
+          />
           }
         </ion-list>
       </ion-content>

@@ -17,6 +17,10 @@ export interface Exercise {
     | 'Core';
   type: 'Compound' | 'Isolation' | 'Isometric';
   sets?: number;
-  reps?: number[];
-  weight?: number[];
+  repsWeight?: repsWeight[];
+}
+
+export interface repsWeight {
+  reps: number;
+  weight: number;
 }
