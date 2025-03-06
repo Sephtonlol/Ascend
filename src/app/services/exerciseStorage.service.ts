@@ -27,14 +27,22 @@ export class ExerciseStorageService extends Dexie {
   }
 
   async addExercise(data: Omit<Exercise, 'id'>) {
-    return await this.exercises.add(data); // Dexie will only store the provided fields
+    return await this.exercises.add(data);
   }
 
   async getExercises(): Promise<Exercise[]> {
     return await this.exercises.toArray();
   }
 
+  async getExercise(id: number): Promise<Exercise | undefined> {
+    return await this.exercises.get(id);
+  }
+
   async deleteExercise(id: number) {
     return await this.exercises.delete(id);
+  }
+
+  async updateWorkout(id: number, data: Partial<Exercise>) {
+    return await this.exercises.update(id, data);
   }
 }

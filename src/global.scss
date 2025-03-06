@@ -41,6 +41,7 @@
   src: url("./app/fonts/condensed.ttf") format("truetype");
 }
 
+ion-button,
 span,
 h1,
 h2,
@@ -53,4 +54,7 @@ p {
 }
 .container {
   padding: 1rem;
+}
+ion-button {
+  --color: white;
 }

@@ -23,4 +23,5 @@ export interface Exercise {
 export interface repsWeight {
   reps: number;
   weight: number;
+  rir?: number;
 }

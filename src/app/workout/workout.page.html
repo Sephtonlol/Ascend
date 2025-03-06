@@ -6,16 +6,46 @@
 
 <ion-content [fullscreen]="true">
   <div class="container">
-    <ion-input
-      label="Title (optional)"
-      label-placement="floating"
-      fill="outline"
-    ></ion-input>
+    <div class="input-container">
+      <ion-input
+        label="Title (optional)"
+        label-placement="floating"
+        fill="outline"
+        [value]="workoutName"
+        #name
+      ></ion-input
+      ><ion-textarea
+        label="Description (optional)"
+        label-placement="floating"
+        fill="outline"
+        [value]="workoutNotes"
+        #notes
+        [autoGrow]="true"
+      ></ion-textarea>
+    </div>
     <ion-button (click)="toggleExercises()" expand="block"
-      >Exercises</ion-button
+      >Edit workout</ion-button
     >
-    @for(workoutExercise of workout; track workoutExercise){
-    <app-exercise-logger [exercise]="workoutExercise" />
+    @if(workout.length > 0){
+    <div class="exercises">
+      <ion-reorder-group
+        [disabled]="false"
+        (ionItemReorder)="handleReorder($any($event))"
+      >
+        @for(workoutExercise of workout; track workoutExercise.exerciseId){
+        <app-exercise-logger [exerciseInfo]="workoutExercise" />}
+      </ion-reorder-group>
+    </div>
+    <ion-button (click)="saveWorkout(name, notes)" expand="block"
+      >Save workout</ion-button
+    >
+    }@else {
+    <div class="empty-workout-container">
+      <div class="empty-workout-inner">
+        <span> A blank slate stands before you.</span>
+        <span class="subtitle">Decide your next challenge to ascend.</span>
+      </div>
+    </div>
     }
   </div>
 
@@ -40,10 +70,10 @@
             [debounce]="100"
             (ionInput)="handleSearchInput($event)"
           ></ion-searchbar>
-          @for(exercise of this.results; track exercise){
+          @for(exercise of this.results; track exercise.id){
           <app-exercise-selector
             [exercise]="exercise"
-            [sets]="getExerciseDetails(exercise.name)"
+            [sets]="getExerciseDetails(exercise.id)"
             (updateWorkout)="handleUpdate($event)"
           />
           }

@@ -1,0 +1,62 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  background-color: #4d8dff;
+  padding: 0.1rem 0.25rem;
+  border-radius: 4px;
+  margin-bottom: 0.3rem;
+}
+.sets-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.75rem;
+  background-color: #1f1f1f;
+  border-radius: 4px;
+  padding-bottom: 0.5rem;
+}
+.exercise-name {
+  font-size: x-large;
+}
+.target-muscle {
+  font-size: small;
+}
+.text-container {
+  display: flex;
+  flex-direction: column;
+}
+.set {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 0.5rem;
+  span {
+    text-align: center;
+    width: 15%;
+    min-width: 3rem;
+  }
+}
+.set-count {
+  position: absolute;
+  transform: translate(0%, 50%);
+  left: calc(3vw - 1.3rem); // calc it without RIR TODO
+  opacity: 80%;
+}
+ion-input {
+  min-height: 2.25rem !important;
+  width: 15%;
+  min-width: 3rem;
+  max-width: 5rem;
+  text-align: center;
+}
+ion-input ::ng-deep label.input-wrapper {
+  padding: 2px 5px;
+  height: 1rem;
+}
+ion-reorder {
+  align-items: center;
+  display: flex;
+}
+ion-icon {
+  width: 40px;
+  height: 40px;
+}

@@ -1,4 +1,29 @@
 <div class="header">
-  <p>{{ exercise.name }}</p>
-  @for(set of sets; track set){ yes }
+  <div class="text-container">
+    <span class="exercise-name"> {{ exercise?.name }} </span
+    ><span class="target-muscle">
+      {{ exercise?.targetMuscle }}
+    </span>
+  </div>
+  <ion-reorder><ion-icon name="reorder-three-outline"></ion-icon></ion-reorder>
+</div>
+
+<div class="sets-container">
+  <div class="set">
+    <span>Weight</span>
+    <span>Reps</span>
+    <span>RIR</span>
+    <!-- make this toggleable in settings TODO -->
+  </div>
+  @for(set of sets; track set){
+  <div class="set">
+    <span class="set-count">
+      {{ set + 1 }}
+    </span>
+    <ion-input id="weight" fill="outline" type="number"></ion-input>
+    <ion-input id="reps" fill="outline" type="number"></ion-input>
+    <ion-input id="rir" fill="outline" type="number"></ion-input>
+    <!-- make this toggleable in settings TODO -->
+  </div>
+  }
 </div>
