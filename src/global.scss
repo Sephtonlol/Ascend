@@ -52,8 +52,14 @@ p {
   font-family: "CustomFont", sans-serif;
   font-weight: bold;
 }
+:host {
+  display: flex;
+}
 .container {
+  justify-self: center;
   padding: 1rem;
+  max-width: 625px;
+  width: 100%;
 }
 ion-button {
   --color: white;

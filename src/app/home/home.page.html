@@ -5,15 +5,11 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <h1>test test test test test test test</h1>
-  <h1>test test test test test test test</h1>
-  <h1>test test test test test test test</h1>
-  <h1>test test test test test test test</h1>
-  <h1>test test test test test test test</h1>
-  <h1>test test test test test test test</h1>
-  <h1>test test test test test test test</h1>
-  <h1>test test test test test test test</h1>
-  <h1>test test test test test test test</h1>
+  <div class="container">
+    @for(workout of workouts; track workout.id){
+    <app-workout-card [workout]="workout" />
+    }
+  </div>
 </ion-content>
 <ion-fab slot="fixed" horizontal="end" vertical="bottom">
   <ion-fab-button (click)="goToWorkout()">

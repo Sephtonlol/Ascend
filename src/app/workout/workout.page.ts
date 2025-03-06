@@ -117,7 +117,7 @@ export class WorkoutPage implements OnInit {
     }
   }
 
-  async saveWorkout(name: IonInput, notes: IonInput) {
+  async saveWorkout(name: IonInput, notes: IonTextarea) {
     if (this.workout.length === 0) {
       console.warn('No exercises selected for workout.');
       return;

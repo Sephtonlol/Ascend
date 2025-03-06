@@ -13,6 +13,9 @@ import {
 import { addIcons } from 'ionicons';
 import { add } from 'ionicons/icons';
 import { ExerciseStorageService } from '../services/exerciseStorage.service';
+import { WorkoutStorageService } from '../services/workout-storage.service';
+import { workout } from '../interfaces/workouts';
+import { WorkoutCardComponent } from '../components/workout-card/workout-card.component';
 
 @Component({
   selector: 'app-home',
@@ -26,15 +29,18 @@ import { ExerciseStorageService } from '../services/exerciseStorage.service';
     IonFabButton,
     IonIcon,
     IonContent,
+    WorkoutCardComponent,
   ],
 })
 export class HomePage implements OnInit {
   constructor(
     private navController: NavController,
-    private exerciseStorageService: ExerciseStorageService
+    private exerciseStorageService: ExerciseStorageService,
+    private workoutStorageService: WorkoutStorageService
   ) {
     addIcons({ add });
   }
+  workouts!: workout[];
 
   goToWorkout() {
     this.navController.navigateForward('/workout');
@@ -43,5 +49,6 @@ export class HomePage implements OnInit {
     if ((await this.exerciseStorageService.getCount()) <= 0) {
       await this.exerciseStorageService.addDefaultExercises();
     }
+    this.workouts = await this.workoutStorageService.getWorkouts();
   }
 }

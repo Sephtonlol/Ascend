@@ -1,0 +1,17 @@
+<div class="header">
+  <span class="name">
+    {{ workout.name }}
+  </span>
+  <div class="muscle-container">
+    <div class="muscle-container-inner">
+      @for(muscleGroup of musclesWorked; track muscleGroup){
+      <span class="target-muscle"> {{ muscleGroup }} </span>
+      }
+    </div>
+  </div>
+</div>
+<ul>
+  @for(exercise of exercises; track exercise.id){
+  <li>{{ exercise.sets }} x {{ exercise.name }}</li>
+  }
+</ul>
