@@ -4,4 +4,13 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true"> </ion-content>
+<ion-content [fullscreen]="true">
+  <div class="container">
+    @for(workout of previousWorkouts; track workout.id){
+    <app-workout-card
+      [previousWorkout]="workout"
+      [routerLink]="['/workout',workout.id,true]"
+    />
+    }
+  </div>
+</ion-content>

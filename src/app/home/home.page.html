@@ -7,12 +7,15 @@
 <ion-content [fullscreen]="true">
   <div class="container">
     @for(workout of workouts; track workout.id){
-    <app-workout-card [workout]="workout" />
+    <app-workout-card
+      [workout]="workout"
+      [routerLink]="['/workout',workout.id,false]"
+    />
     }
   </div>
 </ion-content>
 <ion-fab slot="fixed" horizontal="end" vertical="bottom">
-  <ion-fab-button (click)="goToWorkout()">
+  <ion-fab-button routerLink="/workout">
     <ion-icon name="add"></ion-icon>
   </ion-fab-button>
 </ion-fab>

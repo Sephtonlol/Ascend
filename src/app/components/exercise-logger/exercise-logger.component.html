@@ -20,9 +20,34 @@
     <span class="set-count">
       {{ set + 1 }}
     </span>
-    <ion-input id="weight" fill="outline" type="number"></ion-input>
-    <ion-input id="reps" fill="outline" type="number"></ion-input>
-    <ion-input id="rir" fill="outline" type="number"></ion-input>
+    <ion-input
+      id="weight"
+      fill="outline"
+      type="number"
+      (ionInput)="updateInputField($event, 'weight', set)"
+      [attr.value]="
+        setsDetails[set].weight > -1 ? setsDetails[set].weight : null
+      "
+    ></ion-input>
+
+    <ion-input
+      id="reps"
+      fill="outline"
+      type="number"
+      (ionInput)="updateInputField($event, 'reps', set)"
+      [attr.value]="setsDetails[set].reps > -1 ? setsDetails[set].reps : null"
+    ></ion-input>
+    <ion-input
+      id="rir"
+      fill="outline"
+      type="number"
+      (ionInput)="updateInputField($event, 'rir', set)"
+      [attr.value]="
+        setsDetails[set].rir && setsDetails[set].rir > -1
+          ? setsDetails[set].rir
+          : null
+      "
+    ></ion-input>
     <!-- make this toggleable in settings TODO -->
   </div>
   }

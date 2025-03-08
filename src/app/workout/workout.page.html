@@ -1,12 +1,12 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Workout</ion-title>
+    <ion-title>@if(!isSession){ Workout }@else { {{workoutName}} }</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <div class="container">
-    <div class="input-container">
+    <div class="input-container" [style.display]="isSession ? 'none': 'flex'">
       <ion-input
         label="Title (optional)"
         label-placement="floating"
@@ -23,9 +23,12 @@
         [autoGrow]="true"
       ></ion-textarea>
     </div>
-    <ion-button (click)="toggleExercises()" expand="block"
-      >Edit workout</ion-button
-    >
+    @if(isSession){
+    <p>{{workoutNotes}}</p>
+    }
+    <ion-button (click)="toggleExercises()" expand="block">
+      @if(!isSession){ Edit workout }@else { Edit session }
+    </ion-button>
     @if(workout.length > 0){
     <div class="exercises">
       <ion-reorder-group
@@ -33,13 +36,21 @@
         (ionItemReorder)="handleReorder($any($event))"
       >
         @for(workoutExercise of workout; track workoutExercise.exerciseId){
-        <app-exercise-logger [exerciseInfo]="workoutExercise" />}
+        <app-exercise-logger
+          [exerciseInfo]="workoutExercise"
+          [previousSets]="workoutSets"
+          (updateSetsValues)="handleSetsValues($event)"
+        />}
       </ion-reorder-group>
     </div>
+    @if(!isSession){
     <ion-button (click)="saveWorkout(name, notes)" expand="block"
-      >Save workout</ion-button
-    >
-    }@else {
+      >Save workout </ion-button
+    >}@else {
+    <ion-button (click)="saveSession()" expand="block"
+      >Save session
+    </ion-button>
+    } }@else {
     <div class="empty-workout-container">
       <div class="empty-workout-inner">
         <span> A blank slate stands before you.</span>

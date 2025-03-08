@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Exercise } from 'src/app/interfaces/exercises';
-import { workout } from 'src/app/interfaces/workouts';
+import { previousWorkout, workout } from 'src/app/interfaces/workouts';
 
 import { ExerciseStorageService } from 'src/app/services/exerciseStorage.service';
 
@@ -12,10 +12,20 @@ import { ExerciseStorageService } from 'src/app/services/exerciseStorage.service
 export class WorkoutCardComponent implements OnInit {
   constructor(private exerciseStorageService: ExerciseStorageService) {}
   @Input() workout!: workout;
+  @Input() previousWorkout!: previousWorkout;
   exercises: Exercise[] = [];
   musclesWorked: string[] = [];
 
   async ngOnInit() {
+    if (this.previousWorkout) {
+      this.workout = {
+        name: this.previousWorkout.name,
+        notes: '',
+        lastSessionDate: this.previousWorkout.sessionDate,
+        exercises: this.previousWorkout.setsOrder,
+        sessionCount: 1,
+      };
+    }
     for (let exercise of this.workout.exercises) {
       const fetchedExercise = await this.exerciseStorageService.getExercise(
         exercise.exerciseId

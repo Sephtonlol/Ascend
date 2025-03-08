@@ -1,3 +1,5 @@
+import { repsWeight } from './exercises';
+
 export interface workout {
   id?: number;
   name: string;
@@ -10,6 +12,13 @@ export interface workout {
 export interface exerciseDetails {
   exerciseId: number;
   sets: number;
-  reps?: number;
-  weight?: number;
+}
+
+export interface previousWorkout {
+  id?: number;
+  workoutId: number;
+  name: string;
+  workoutSets: { repsWeight: repsWeight[] }[];
+  setsOrder: exerciseDetails[];
+  sessionDate: Date;
 }

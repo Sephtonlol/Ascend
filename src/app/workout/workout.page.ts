@@ -17,11 +17,13 @@ import {
   IonTextarea,
 } from '@ionic/angular/standalone';
 import { ExerciseSelectorComponent } from '../components/exercise-selector/exercise-selector.component';
-import { Exercise } from '../interfaces/exercises';
+import { Exercise, repsWeight } from '../interfaces/exercises';
 import { ExerciseStorageService } from '../services/exerciseStorage.service';
 import { WorkoutStorageService } from '../services/workout-storage.service';
 import { ExerciseLoggerComponent } from '../components/exercise-logger/exercise-logger.component';
-import { workout } from '../interfaces/workouts';
+import { previousWorkout, workout } from '../interfaces/workouts';
+import { ActivatedRoute } from '@angular/router';
+import { PreviousWorkoutStorageService } from '../services/previous-workout-storage.service';
 
 @Component({
   selector: 'app-workout',
@@ -50,8 +52,12 @@ import { workout } from '../interfaces/workouts';
 export class WorkoutPage implements OnInit {
   constructor(
     private exerciseStorageService: ExerciseStorageService,
-    private workoutStorageService: WorkoutStorageService
+    private workoutStorageService: WorkoutStorageService,
+    private previousWorkoutStorageService: PreviousWorkoutStorageService,
+    private route: ActivatedRoute
   ) {}
+  isSession: boolean = false;
+  workoutId!: string;
   workout: { exerciseId: number; sets: number }[] = [];
   exercises: Exercise[] = [];
   exercisesOpen: boolean = false;
@@ -61,9 +67,11 @@ export class WorkoutPage implements OnInit {
   workoutNotes: string = '';
   checked: boolean = false;
 
+  workoutSets: { repsWeight: repsWeight[] }[] = [];
+  completedWorkout!: previousWorkout;
+
   handleReorder(event: CustomEvent<ItemReorderEventDetail>) {
     this.workout = event.detail.complete(this.workout);
-    console.log(this.workout);
   }
 
   handleSearchInput(event: Event) {
@@ -117,6 +125,50 @@ export class WorkoutPage implements OnInit {
     }
   }
 
+  async handleSetsValues(data: {
+    repsWeight: repsWeight[];
+    exerciseId: number;
+  }) {
+    if (!this.workoutSets) {
+      const exerciseCount = await this.exerciseStorageService.getCount();
+      this.workoutSets = Array.from({ length: exerciseCount }, () => ({
+        repsWeight: [],
+      }));
+    }
+
+    if (!this.workoutSets[data.exerciseId]) {
+      this.workoutSets[data.exerciseId] = { repsWeight: [] };
+    }
+
+    this.workoutSets[data.exerciseId].repsWeight = [...data.repsWeight];
+  }
+  async saveSession() {
+    if (this.workout.length === 0) {
+      console.warn('No exercises selected for workout.');
+      return;
+    }
+    this.completedWorkout = {
+      workoutId: Number(this.workoutId),
+      name: this.workoutName,
+      workoutSets: this.workoutSets,
+      sessionDate: new Date(),
+      setsOrder: this.workout,
+    };
+    if (this.route.snapshot.paramMap.get('isPrevious') == 'true') {
+      const workout =
+        await this.previousWorkoutStorageService.getPreviousWorkout(
+          Number(this.workoutId)
+        );
+      this.previousWorkoutStorageService.updatePreviousWorkout(
+        Number(workout?.id),
+        this.completedWorkout
+      );
+    } else
+      this.previousWorkoutStorageService.addPreviousWorkout(
+        this.completedWorkout
+      );
+  }
+
   async saveWorkout(name: IonInput, notes: IonTextarea) {
     if (this.workout.length === 0) {
       console.warn('No exercises selected for workout.');
@@ -135,10 +187,34 @@ export class WorkoutPage implements OnInit {
     };
 
     await this.workoutStorageService.addWorkout(newWorkout);
-    console.log('Workout saved:', newWorkout);
   }
 
   async ngOnInit() {
+    this.workoutId = this.route.snapshot.paramMap.get('id')!;
+    if (this.route.snapshot.paramMap.get('isPrevious') == 'true') {
+      const workout =
+        await this.previousWorkoutStorageService.getPreviousWorkout(
+          Number(this.workoutId)
+        );
+      if (workout) {
+        this.isSession = true;
+        this.workout = workout.setsOrder;
+        this.workoutName = workout.name;
+        this.workoutSets = workout.workoutSets;
+        this.workoutNotes = '';
+      }
+    } else {
+      const workout = await this.workoutStorageService.getWorkout(
+        Number(this.workoutId)
+      );
+
+      if (workout) {
+        this.isSession = true;
+        this.workout = workout?.exercises;
+        this.workoutName = workout?.name;
+        this.workoutNotes = workout?.notes;
+      }
+    }
     this.exercises = await this.exerciseStorageService.getExercises();
   }
 }

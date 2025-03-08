@@ -16,6 +16,7 @@ import { ExerciseStorageService } from '../services/exerciseStorage.service';
 import { WorkoutStorageService } from '../services/workout-storage.service';
 import { workout } from '../interfaces/workouts';
 import { WorkoutCardComponent } from '../components/workout-card/workout-card.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -30,11 +31,11 @@ import { WorkoutCardComponent } from '../components/workout-card/workout-card.co
     IonIcon,
     IonContent,
     WorkoutCardComponent,
+    RouterLink,
   ],
 })
 export class HomePage implements OnInit {
   constructor(
-    private navController: NavController,
     private exerciseStorageService: ExerciseStorageService,
     private workoutStorageService: WorkoutStorageService
   ) {
@@ -42,9 +43,6 @@ export class HomePage implements OnInit {
   }
   workouts!: workout[];
 
-  goToWorkout() {
-    this.navController.navigateForward('/workout');
-  }
   async ngOnInit(): Promise<void> {
     if ((await this.exerciseStorageService.getCount()) <= 0) {
       await this.exerciseStorageService.addDefaultExercises();

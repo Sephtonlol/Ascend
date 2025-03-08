@@ -21,6 +21,11 @@ export const routes: Routes = [
       import('./workout/workout.page').then((m) => m.WorkoutPage),
   },
   {
+    path: 'workout/:id/:isPrevious',
+    loadComponent: () =>
+      import('./workout/workout.page').then((m) => m.WorkoutPage),
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full',
